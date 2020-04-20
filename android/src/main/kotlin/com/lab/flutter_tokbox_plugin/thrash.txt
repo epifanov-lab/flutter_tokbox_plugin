@@ -1,0 +1,24 @@
+/*
+  private lateinit var channel : MethodChannel
+
+        val channel = MethodChannel(registrar.messenger(), "flutter_tokbox_plugin")
+      channel.setMethodCallHandler(FlutterTokboxPlugin())
+
+  override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
+    channel = MethodChannel(flutterPluginBinding.getFlutterEngine().getDartExecutor(), "flutter_tokbox_plugin")
+    channel.setMethodCallHandler(this);
+  }
+
+    override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
+    channel.setMethodCallHandler(null)
+  }
+
+  override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
+    if (call.method == "getPlatformVersion") {
+      result.success("Android ${android.os.Build.VERSION.RELEASE}")
+    } else {
+      result.notImplemented()
+    }
+  }
+
+*/

@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 
+const String PLUGIN_VIEW_KEY = "flutter_tokbox_plugin.view";
+
 class FlutterTokboxPlugin {
   static const MethodChannel _channel =
       const MethodChannel('flutter_tokbox_plugin');
