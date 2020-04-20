@@ -10,9 +10,7 @@ import android.view.View
 import android.widget.FrameLayout
 import android.widget.TextView
 import android.widget.Toast
-import com.opentok.android.*
-import kotlinx.android.synthetic.main.tokbox_camera_view.view.*
-import pub.devrel.easypermissions.EasyPermissions
+
 import java.util.*
 
 interface TokBoxCameraListener {
