@@ -8,16 +8,16 @@ import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.platform.PlatformView
 
-class TokBoxPlatformView(private val context: Context,
+class TokboxPlatformView(private val context: Context,
                          messenger: BinaryMessenger, id: Int,
                          private val parameters: Map<String, String>)
-                         : PlatformView, MethodChannel.MethodCallHandler, TokBoxCameraListener {
+                         : PlatformView, MethodChannel.MethodCallHandler, TokboxCameraListener {
 
-    private val mTokboxView: TokBoxCameraView = TokBoxCameraView(context = context)
+    private val mTokboxView: TokboxCameraView = TokboxCameraView(context = context)
     private var callDisposeResult: MethodChannel.Result? = null
 
     init {
-        MethodChannel(messenger, "$PLUGIN_VIEW_KEY#$id")
+        MethodChannel(messenger, "$PLUGIN_VIEW_CHANNEL_KEY#$id")
                 .setMethodCallHandler(this)
 
         mTokboxView.setListener(this)

@@ -2,7 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 
-const String PLUGIN_VIEW_KEY = "flutter_tokbox_plugin.view";
+const String PLUGIN_CHANNEL_KEY = "flutter_tokbox_plugin";
+const String PLUGIN_VIEW_CHANNEL_KEY = "$PLUGIN_CHANNEL_KEY.view";
 
 class FlutterTokboxPlugin {
   static const MethodChannel _channel =

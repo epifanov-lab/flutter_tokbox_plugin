@@ -4,16 +4,14 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:flutter_tokbox_plugin/flutter_tokbox_plugin.dart';
 
-void main() {
-  runApp(MyApp());
-}
+void main() => runApp(FlutterTokboxApp());
 
-class MyApp extends StatefulWidget {
+class FlutterTokboxApp extends StatefulWidget {
   @override
-  _MyAppState createState() => _MyAppState();
+  _FlutterTokboxAppState createState() => _FlutterTokboxAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _FlutterTokboxAppState extends State<FlutterTokboxApp> {
   String _platformVersion = 'Unknown';
 
   @override
@@ -37,9 +35,7 @@ class _MyAppState extends State<MyApp> {
     // setState to update our non-existent appearance.
     if (!mounted) return;
 
-    setState(() {
-      _platformVersion = platformVersion;
-    });
+    setState(() => _platformVersion = platformVersion);
   }
 
   @override
@@ -47,10 +43,12 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Plugin example app'),
+          title: const Text('Flutter tokbox plugin example'),
         ),
-        body: Center(
-          child: Text('Running on: $_platformVersion\n'),
+        body: Stack(
+          children: <Widget>[
+            Text('Running on: $_platformVersion\n')
+          ],
         ),
       ),
     );

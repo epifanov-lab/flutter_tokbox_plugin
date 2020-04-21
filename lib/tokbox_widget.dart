@@ -31,7 +31,7 @@ class _TokboxState extends State<TokboxWidget> {
 
     if (defaultTargetPlatform == TargetPlatform.android) {
       return AndroidView(
-        viewType: PLUGIN_VIEW_KEY,
+        viewType: PLUGIN_VIEW_CHANNEL_KEY,
         creationParams: params,
         creationParamsCodec: const StandardMessageCodec(),
         onPlatformViewCreated: _onPlatformViewCreated,
@@ -40,7 +40,7 @@ class _TokboxState extends State<TokboxWidget> {
       return SafeArea(
         top: true,
         child: UiKitView(
-          viewType: PLUGIN_VIEW_KEY,
+          viewType: PLUGIN_VIEW_CHANNEL_KEY,
           creationParams: params,
           creationParamsCodec: const StandardMessageCodec(),
           onPlatformViewCreated: _onPlatformViewCreated,

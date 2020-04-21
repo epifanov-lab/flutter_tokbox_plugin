@@ -21,11 +21,11 @@ import pub.devrel.easypermissions.EasyPermissions
 
 import java.util.*
 
-interface TokBoxCameraListener {
+interface TokboxCameraListener {
     fun onDisconnect()
 }
 
-class TokBoxCameraView
+class TokboxCameraView
 @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0)
     : FrameLayout(context, attrs, defStyle), Session.SessionListener, PublisherKit.PublisherListener {
 
@@ -47,7 +47,7 @@ class TokBoxCameraView
     private var publisher: Publisher? = null
     private val subscribers = ArrayList<Subscriber>()
     private val subscriberStreams = HashMap<Stream, Subscriber>()
-    private var tokBoxCameraListener: TokBoxCameraListener? = null
+    private var tokboxCameraListener: TokboxCameraListener? = null
     private var isAudioPublished: Boolean = true
 
     init {
@@ -74,8 +74,8 @@ class TokBoxCameraView
         keepScreenOn = true
     }
 
-    fun setListener(listener: TokBoxCameraListener) {
-        tokBoxCameraListener = listener
+    fun setListener(listener: TokboxCameraListener) {
+        tokboxCameraListener = listener
     }
 
     fun connect(apiKey: String, sessionId: String, token: String) {
@@ -97,7 +97,7 @@ class TokBoxCameraView
                 .build()
 
         publisher?.run {
-            setPublisherListener(this@TokBoxCameraView)
+            setPublisherListener(this@TokboxCameraView)
             setStyle(BaseVideoRenderer.STYLE_VIDEO_SCALE, BaseVideoRenderer.STYLE_VIDEO_FILL)
 
             mPublisherView.addView(view)
@@ -114,8 +114,8 @@ class TokBoxCameraView
         setStatus("onDisconnected: disconnected from session " + session.sessionId)
 
         callSession = null
-        tokBoxCameraListener?.onDisconnect()
-        tokBoxCameraListener = null
+        tokboxCameraListener?.onDisconnect()
+        tokboxCameraListener = null
     }
 
     override fun onError(session: Session, opentokError: OpentokError) {
