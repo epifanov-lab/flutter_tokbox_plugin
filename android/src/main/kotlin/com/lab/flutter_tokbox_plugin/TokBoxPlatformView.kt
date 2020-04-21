@@ -13,24 +13,24 @@ class TokBoxPlatformView(private val context: Context,
                          private val parameters: Map<String, String>)
                          : PlatformView, MethodChannel.MethodCallHandler, TokBoxCameraListener {
 
-    private val tokboxView: TokBoxCameraView = TokBoxCameraView(context = context)
+    private val mTokboxView: TokBoxCameraView = TokBoxCameraView(context = context)
     private var callDisposeResult: MethodChannel.Result? = null
 
     init {
         MethodChannel(messenger, "$PLUGIN_VIEW_KEY#$id")
                 .setMethodCallHandler(this)
 
-        tokboxView.setListener(this)
+        mTokboxView.setListener(this)
 
         Handler().postDelayed({
-            tokboxView.connect(
+            mTokboxView.connect(
                     parameters.getValue("api_key"),
                     parameters.getValue("session_id"),
                     parameters.getValue("token"))
         }, 400)
     }
 
-    override fun getView(): View = tokboxView
+    override fun getView(): View = mTokboxView
 
     override fun onMethodCall(methodCall: MethodCall, result: MethodChannel.Result) {
         when (methodCall.method) {
@@ -40,7 +40,7 @@ class TokBoxPlatformView(private val context: Context,
     }
 
     override fun dispose() {
-        tokboxView.disconnect()
+        mTokboxView.disconnect()
         callDisposeResult?.success(null)
         callDisposeResult = null
     }

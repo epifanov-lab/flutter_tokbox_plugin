@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_tokbox_plugin/flutter_tokbox_plugin.dart';
 
 class TokboxConfiguration {
   final String token, apiKey, sessionId;
@@ -10,10 +11,10 @@ class TokboxConfiguration {
 }
 
 class TokboxWidget extends StatefulWidget {
-  final TokboxConfiguration tokboxConfiguration;
+  final TokboxConfiguration config;
   final Function onVideoCallFinished;
 
-  TokboxWidget(this.tokboxConfiguration, this.onVideoCallFinished);
+  TokboxWidget(this.config, this.onVideoCallFinished);
 
   @override
   State<StatefulWidget> createState() => _TokboxState();
@@ -22,16 +23,15 @@ class TokboxWidget extends StatefulWidget {
 class _TokboxState extends State<TokboxWidget> {
   @override
   Widget build(BuildContext context) {
-    final tokboxConfiguration = widget.tokboxConfiguration;
     Map<String, String> params = <String, String>{
-      'token': tokboxConfiguration.token,
-      'api_key': tokboxConfiguration.apiKey,
-      'session_id': tokboxConfiguration.sessionId
+      'token': widget.config.token,
+      'api_key': widget.config.apiKey,
+      'session_id': widget.config.sessionId
     };
 
     if (defaultTargetPlatform == TargetPlatform.android) {
       return AndroidView(
-        viewType: "plugins.flutter.io/tokbox",
+        viewType: PLUGIN_VIEW_KEY,
         creationParams: params,
         creationParamsCodec: const StandardMessageCodec(),
         onPlatformViewCreated: _onPlatformViewCreated,
@@ -40,7 +40,7 @@ class _TokboxState extends State<TokboxWidget> {
       return SafeArea(
         top: true,
         child: UiKitView(
-          viewType: "plugins.flutter.io/tokbox",
+          viewType: PLUGIN_VIEW_KEY,
           creationParams: params,
           creationParamsCodec: const StandardMessageCodec(),
           onPlatformViewCreated: _onPlatformViewCreated,
