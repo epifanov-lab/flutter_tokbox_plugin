@@ -7,9 +7,17 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.FrameLayout
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
+
+import com.opentok.android.Session
+import com.opentok.android.Stream
+import com.opentok.android.Publisher
+import com.opentok.android.PublisherKit
+import com.opentok.android.Subscriber
+import com.opentok.android.BaseVideoRenderer
+import com.opentok.android.OpentokError
+import pub.devrel.easypermissions.EasyPermissions
+
 
 import java.util.*
 
@@ -18,18 +26,23 @@ interface TokBoxCameraListener {
 }
 
 class TokBoxCameraView
-@JvmOverloads constructor(context: Context,
-                          attrs: AttributeSet? = null,
-                          defStyle: Int = 0) : FrameLayout(context, attrs, defStyle), Session.SessionListener, PublisherKit.PublisherListener {
+@JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0)
+    : FrameLayout(context, attrs, defStyle), Session.SessionListener, PublisherKit.PublisherListener {
+
     companion object {
         private const val MAX_NUM_SUBSCRIBERS = 2
         private const val TAG = "TokeBoxCameraView"
     }
 
-    private var publisherView: FrameLayout
-    private var subscriberViewPrimary: FrameLayout
-    private var subscriberViewSecondary: FrameLayout
-    private var sessionStatus: TextView
+    private var mPublisherView: FrameLayout
+    private var mSubscriberViewPrimary: FrameLayout
+    private var mSubscriberViewSecondary: FrameLayout
+    private var mSessionStatus: TextView
+    private var mEndCallButton: View
+    private var mSwitchCameraButton: View
+    private var mMuteButton: ImageView
+    private var mProgressBar: ProgressBar
+
     private var callSession: Session? = null
     private var publisher: Publisher? = null
     private val subscribers = ArrayList<Subscriber>()
@@ -39,21 +52,25 @@ class TokBoxCameraView
 
     init {
         val view = LayoutInflater.from(context).inflate(R.layout.tokbox_camera_view, this, true)
-        publisherView = view.publisher_view
-        subscriberViewPrimary = view.subscriber_view_0
-        subscriberViewSecondary = view.subscriber_view_1
-        sessionStatus = view.video_status
+        mPublisherView = view.findViewById(R.id.publisher_view)
+        mSubscriberViewPrimary = view.findViewById(R.id.subscriber_view_0)
+        mSubscriberViewSecondary = view.findViewById(R.id.subscriber_view_1)
+        mSessionStatus = view.findViewById(R.id.video_status)
+        mEndCallButton = view.findViewById(R.id.end_call_button)
+        mSwitchCameraButton = view.findViewById(R.id.switch_camera_button)
+        mMuteButton = view.findViewById(R.id.mute_mic_button)
+        mProgressBar = view.findViewById(R.id.progress_bar)
 
-        view.end_call_button.setOnClickListener { disconnect() }
-        view.switch_camera_button.setOnClickListener {
-            publisher?.cycleCamera()
-        }
-
-        mute_mic_button.setOnClickListener {
+        mEndCallButton.setOnClickListener { disconnect() }
+        mSwitchCameraButton.setOnClickListener { publisher?.cycleCamera() }
+        mMuteButton.setOnClickListener {
             isAudioPublished = !isAudioPublished
             publisher?.publishAudio = isAudioPublished
-            mute_mic_button.setImageResource(if (isAudioPublished) R.drawable.ic_mic_on else R.drawable.ic_mic_off)
-        }
+            mMuteButton.setImageResource(
+                    if (isAudioPublished) R.drawable.ic_mic_on
+                    else R.drawable.ic_mic_off)
+            }
+
         keepScreenOn = true
     }
 
@@ -67,14 +84,12 @@ class TokBoxCameraView
             callSession = Session.Builder(context, apiKey, sessionId).build()
             callSession?.setSessionListener(this)
             callSession?.connect(token)
-        } else {
-            setStatus("No permissons for camera and mic")
-        }
+        } else setStatus("No permissons for camera and mic")
     }
 
     override fun onConnected(session: Session) {
         setStatus("onConnected: Connected to session " + session.sessionId)
-        progress_bar.visibility = View.GONE
+        mProgressBar.visibility = View.GONE
 
         publisher = Publisher.Builder(context)
                 .resolution(Publisher.CameraCaptureResolution.MEDIUM)
@@ -85,7 +100,7 @@ class TokBoxCameraView
             setPublisherListener(this@TokBoxCameraView)
             setStyle(BaseVideoRenderer.STYLE_VIDEO_SCALE, BaseVideoRenderer.STYLE_VIDEO_FILL)
 
-            publisherView.addView(view)
+            mPublisherView.addView(view)
             if (publisher?.view is GLSurfaceView) {
                 (publisher?.view as GLSurfaceView).setZOrderOnTop(true)
             }
@@ -126,12 +141,12 @@ class TokBoxCameraView
         subscriberStreams[stream] = subscriber
         subscriber.renderer.setStyle(BaseVideoRenderer.STYLE_VIDEO_SCALE, BaseVideoRenderer.STYLE_VIDEO_FILL)
         if (subscribers.size == 1) {
-            subscriberViewPrimary.run {
+            mSubscriberViewPrimary.run {
                 addView(subscriber.view)
                 visibility = View.VISIBLE
             }
         } else {
-            subscriberViewSecondary.run {
+            mSubscriberViewSecondary.run {
                 addView(subscriber.view)
                 visibility = View.VISIBLE
             }
@@ -142,12 +157,12 @@ class TokBoxCameraView
         setStatus("onStreamDropped: Stream " + stream.streamId + " dropped from session " + session.sessionId)
         val subscriber = subscriberStreams[stream] ?: return
         if (subscribers.indexOf(subscriber) == 0) {
-            subscriberViewPrimary.run {
+            mSubscriberViewPrimary.run {
                 removeAllViews()
                 visibility = View.GONE
             }
         } else {
-            subscriberViewSecondary.run {
+            mSubscriberViewSecondary.run {
                 removeAllViews()
                 visibility = View.GONE
             }
@@ -190,7 +205,7 @@ class TokBoxCameraView
         }
 
         if (publisher != null) {
-            publisherView.removeView(publisher?.view)
+            mPublisherView.removeView(publisher?.view)
             callSession?.unpublish(publisher)
             publisher?.destroy()
             publisher = null
@@ -200,6 +215,6 @@ class TokBoxCameraView
 
     private fun setStatus(message: String) {
         Log.d(TAG, message)
-        sessionStatus.text = message
+        mSessionStatus.text = message
     }
 }
