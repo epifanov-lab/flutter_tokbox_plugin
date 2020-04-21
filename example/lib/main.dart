@@ -1,8 +1,11 @@
-import 'package:flutter/material.dart';
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_tokbox_plugin/flutter_tokbox_plugin.dart';
+import 'package:flutter_tokbox_plugin/tokbox_widget.dart';
+
+import 'theme.dart';
 
 void main() => runApp(FlutterTokboxApp());
 
@@ -41,13 +44,26 @@ class _FlutterTokboxAppState extends State<FlutterTokboxApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: appTheme,
       home: Scaffold(
         appBar: AppBar(
           title: const Text('Flutter tokbox plugin example'),
         ),
         body: Stack(
           children: <Widget>[
-            Text('Running on: $_platformVersion\n')
+            TokboxWidget(
+                TokboxConfiguration(
+                  /* token */ '',
+                  /* apiKey */ '',
+                  /* sessionId */ ''
+                ),
+                (){}
+            ),
+            Positioned(
+              top: 8, right: 16,
+              child: Text('Running on: $_platformVersion',
+                style: appTheme.textTheme.subtitle1),
+            )
           ],
         ),
       ),

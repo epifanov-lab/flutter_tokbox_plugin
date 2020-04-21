@@ -17,6 +17,8 @@ class TokboxPlatformView(private val context: Context,
     private var callDisposeResult: MethodChannel.Result? = null
 
     init {
+        println("@@@@@ TokboxPlatformView.constructor: $id $parameters")
+
         MethodChannel(messenger, "$PLUGIN_VIEW_CHANNEL_KEY#$id")
                 .setMethodCallHandler(this)
 
@@ -32,20 +34,23 @@ class TokboxPlatformView(private val context: Context,
 
     override fun getView(): View = mTokboxView
 
-    override fun onMethodCall(methodCall: MethodCall, result: MethodChannel.Result) {
-        when (methodCall.method) {
+    override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
+        println("@@@@@ TokboxPlatformView.onMethodCall: ${call.method} with args ${call.arguments}")
+        when (call.method) {
             "onCallDispose" -> callDisposeResult = result
             else -> result.notImplemented()
         }
     }
 
     override fun dispose() {
+        println("@@@@@ TokboxPlatformView.dispose")
         mTokboxView.disconnect()
         callDisposeResult?.success(null)
         callDisposeResult = null
     }
 
     override fun onDisconnect() {
+        println("@@@@@ TokboxPlatformView.onDisconnect")
         callDisposeResult?.success(null)
     }
 

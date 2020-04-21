@@ -75,7 +75,7 @@ class _TokboxState extends State<TokboxWidget> {
 
 class TokboxController {
   TokboxController._(int id)
-      : _channel = new MethodChannel('plugins.flutter.io/tokbox_$id');
+      : _channel = new MethodChannel('$PLUGIN_VIEW_CHANNEL_KEY#$id');
 
   final MethodChannel _channel;
 
