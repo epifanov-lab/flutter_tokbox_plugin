@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_opentok/flutter_opentok.dart';
 import 'package:flutter_tokbox_plugin/flutter_tokbox_plugin.dart';
 
 class TokboxConfiguration {
@@ -21,6 +22,12 @@ class TokboxWidget extends StatefulWidget {
 }
 
 class _TokboxState extends State<TokboxWidget> {
+  bool publishVideo = true;
+  OTFlutter controller;
+  OpenTokConfiguration openTokConfiguration;
+  
+  
+  
   @override
   Widget build(BuildContext context) {
     Map<String, String> params = <String, String>{
@@ -28,7 +35,8 @@ class _TokboxState extends State<TokboxWidget> {
       'api_key': widget.config.apiKey,
       'session_id': widget.config.sessionId
     };
-
+    openTokConfiguration = OpenTokConfiguration(
+        token: widget.config.token, apiKey: widget.config.apiKey, sessionId: widget.config.sessionId);
     if (defaultTargetPlatform == TargetPlatform.android) {
       return AndroidView(
         viewType: PLUGIN_VIEW_CHANNEL_KEY,
@@ -39,17 +47,7 @@ class _TokboxState extends State<TokboxWidget> {
     } else if (defaultTargetPlatform == TargetPlatform.iOS) {
       return SafeArea(
         top: true,
-        child: UiKitView(
-          viewType: PLUGIN_VIEW_CHANNEL_KEY,
-          creationParams: params,
-          creationParamsCodec: const StandardMessageCodec(),
-          onPlatformViewCreated: _onPlatformViewCreated,
-          gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>[
-            new Factory<OneSequenceGestureRecognizer>(
-              () => new EagerGestureRecognizer(),
-            ),
-          ].toSet(),
-        ),
+        child: _addRenderView(0, (viewId) => null),
       );
     }
     return Scaffold(
@@ -65,7 +63,28 @@ class _TokboxState extends State<TokboxWidget> {
       ),
     );
   }
+  Widget _addRenderView(int uid, Function(int viewId) finished) {
+    OTFlutter.onSessionConnect = () {
+      print("onSessionConnect");
+    };
 
+    OTFlutter.onSessionDisconnect = () {
+      print("onSessionDisconnect");
+    };
+
+    var publisherSettings = OTPublisherKitSettings(
+      name: "Mr. John Doe",
+      audioTrack: true,
+      videoTrack: publishVideo,
+    );
+    Widget view = OTFlutter.createNativeView(uid,
+        publisherSettings: publisherSettings, created: (viewId) async {
+          controller = await OTFlutter.init(viewId);
+
+          await controller.create(openTokConfiguration);
+        });
+    return view;
+  }
   void _onPlatformViewCreated(int id) {
     new TokboxController._(id).onWidgetDispose().then((_) {
       widget.onVideoCallFinished();
