@@ -18,22 +18,20 @@ flutter_tokbox_plugin
   s.license          = { :file => '../LICENSE' }
   s.author           = { 'Your Company' => 'email@example.com' }
   s.source           = { :path => '.' }
+  s.swift_version = '4.2'
   s.source_files = 'Classes/**/*'
   s.public_header_files = 'Classes/**/*.h'
   s.dependency 'Flutter'
   s.dependency 'OpenTok', openTokLibraryVersion
-  s.dependency 'SnapKit'
+  s.dependency 'SnapKit', '~> 5.0.0'
   s.static_framework = true
-  s.platform = :ios, '9.3'
 
-  # Flutter.framework does not contain a i386 slice. Only x86_64 simulators are supported.
-  #s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', 'VALID_ARCHS[sdk=iphonesimulator*]' => 'x86_64' }
-  #s.swift_version = '5.0'
-  #s.ios.deployment_target = '10.0'
+  s.ios.deployment_target = '10.0'
+
   s.prepare_command = <<-CMD
-        echo // Generated file, do not edit > Classes/UserAgent.h
-        echo "#define LIBRARY_VERSION @\\"#{libraryVersion}\\"" >> Classes/UserAgent.h
-        echo "#define LIBRARY_NAME @\\"flutter_opentok\\"" >> Classes/UserAgent.h
-        echo "#define OPENTOK_LIBRARY_VERSION @\\"#{openTokLibraryVersion}\\"" >> Classes/UserAgent.h
+      echo // Generated file, do not edit > Classes/UserAgent.h
+      echo "#define LIBRARY_VERSION @\\"#{libraryVersion}\\"" >> Classes/UserAgent.h
+      echo "#define LIBRARY_NAME @\\"flutter_opentok\\"" >> Classes/UserAgent.h
+      echo "#define OPENTOK_LIBRARY_VERSION @\\"#{openTokLibraryVersion}\\"" >> Classes/UserAgent.h
     CMD
-end
+ end

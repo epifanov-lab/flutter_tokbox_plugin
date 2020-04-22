@@ -1,19 +1,14 @@
 PODS:
   - Flutter (1.0.0)
-  - flutter_opentok (0.0.6):
-    - Flutter
-    - OpenTok (= 2.16.3)
-    - SnapKit (~> 5.0.0)
   - flutter_tokbox_plugin (0.0.5):
     - Flutter
     - OpenTok (= 2.16.3)
-    - SnapKit
+    - SnapKit (~> 5.0.0)
   - OpenTok (2.16.3)
   - SnapKit (5.0.1)
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
-  - flutter_opentok (from `.symlinks/plugins/flutter_opentok/ios`)
   - flutter_tokbox_plugin (from `.symlinks/plugins/flutter_tokbox_plugin/ios`)
 
 SPEC REPOS:
@@ -24,15 +19,12 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
-  flutter_opentok:
-    :path: ".symlinks/plugins/flutter_opentok/ios"
   flutter_tokbox_plugin:
     :path: ".symlinks/plugins/flutter_tokbox_plugin/ios"
 
 SPEC CHECKSUMS:
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
-  flutter_opentok: 336c4d8a04b17bef517c32250a71c9a04cd53931
-  flutter_tokbox_plugin: f6600ada98f9522f168cbaebbb6a2ab0f6b3e2c4
+  flutter_tokbox_plugin: 8df33d5a5fb2872d14bbd878589491a4ec6fa207
   OpenTok: e17e1333108837cf0669be5de8f3155d1eb7ac12
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
 

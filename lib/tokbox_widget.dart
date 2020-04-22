@@ -3,8 +3,9 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_opentok/flutter_opentok.dart';
 import 'package:flutter_tokbox_plugin/flutter_tokbox_plugin.dart';
+
+import 'flutter_opentok.dart';
 
 class TokboxConfiguration {
   final String token, apiKey, sessionId;
@@ -77,10 +78,11 @@ class _TokboxState extends State<TokboxWidget> {
       audioTrack: true,
       videoTrack: publishVideo,
     );
+
     Widget view = OTFlutter.createNativeView(uid,
         publisherSettings: publisherSettings, created: (viewId) async {
           controller = await OTFlutter.init(viewId);
-
+          //await controller.enableVideo();
           await controller.create(openTokConfiguration);
         });
     return view;
