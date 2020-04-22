@@ -7,6 +7,7 @@
 // https://forums.swift.org/t/swift-static-libraries-dont-copy-generated-objective-c-header/19816
 #import "flutter_tokbox_plugin-Swift.h"
 #endif
+#import "UserAgent.h"
 
 @implementation FlutterTokboxPlugin
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {

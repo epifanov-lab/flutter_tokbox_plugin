@@ -1,114 +1,16 @@
-import Flutter
-import UIKit
-import OpenTok
-
-public class SwiftFlutterTokboxPlugin: NSObject, FlutterPlugin {
-  public static func register(with registrar: FlutterPluginRegistrar) {
-    let channel = FlutterMethodChannel(name: "flutter_tokbox_plugin", binaryMessenger: registrar.messenger())
-    let instance = SwiftFlutterTokboxPlugin()
-    registrar.addMethodCallDelegate(instance, channel: channel)
-//            channel.setMethodCallHandler({(call: FlutterMethodCall, result: FlutterResult) -> Void in
-//                if let args :Dictionary<String, Any> = call.arguments as? Dictionary<String,Any> {
 //
-//                }
-//            })
-    let controller: UIViewController =
-    (UIApplication.shared.delegate?.window??.rootViewController)!;
-    registrar.register(TokBoxViewFactory(withRegistrar: registrar), withId: "flutter_tokbox_plugin.view")
-    //let controller : FlutterViewController = window?.rootViewController as! FlutterViewController
-    //создание видео плагина
-    //let viewFactory = VideoViewFactory(controller: controller)
-    //registrar.register(viewFactory, withId: "VideoView")
-  }
-//    public static func register(with registrar: FlutterPluginRegistrar) {
-//        registrar.addApplicationDelegate(SwiftFlutterTokboxPlugin(with: registrar))
-//    }
-  public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-    
-    switch(call.method) {
-    case "onCallDispose":
-        print("dispose")
-        //result(FlutterMethodNotImplemented)
-        break
-    case "getPlatformVersion":
-        result("iOS " + UIDevice.current.systemVersion)
-    default:
-        result(FlutterMethodNotImplemented)
-        return
-    }
-    
-  }
-}
+//  VideoViewPlugin.swift
+//  Runner
+//
+//  Created by Yaroslav on 21/04/2020.
+//
 
-public class TokBoxViewFactory: NSObject, FlutterPlatformViewFactory {
-    
-    var registrar: FlutterPluginRegistrar?
-    
-    public init(withRegistrar registrar: FlutterPluginRegistrar){
-        super.init()
-        self.registrar = registrar
-    }
-    
-    public func create(withFrame frame: CGRect, viewIdentifier viewId: Int64, arguments args: Any?) -> FlutterPlatformView {
-        let argsDictionary =  args as! Dictionary<String, Any>
-        //print(argsDictionary)
-        
-        //kApiKey = argsDictionary["api_key"] as! String
-        //kSessionId = argsDictionary["session_id"] as! String
-        //kToken = argsDictionary["token"] as! String
-        return AppleMapController(withFrame: frame, withRegistrar: registrar!, kApiKey: argsDictionary["api_key"] as! String, kSessionId: argsDictionary["session_id"] as! String, kToken: argsDictionary["token"] as! String,withId: viewId )
-        
-    }
-    
-    public func createArgsCodec() -> FlutterMessageCodec & NSObjectProtocol {
-        return FlutterStandardMessageCodec(readerWriter: FlutterStandardReaderWriter())
-    }
-}
-public class AppleMapController : NSObject, FlutterPlatformView {
-    var registrar: FlutterPluginRegistrar
-    var channel: FlutterMethodChannel?
-    var options :Dictionary<String, Any>?
-    var kApiKey:String
-    var kSessionId:String
-    var kToken:String
-    public init(withFrame frame: CGRect, withRegistrar registrar: FlutterPluginRegistrar,kApiKey:String,kSessionId:String,kToken:String,withId id: Int64) {
-        channel = FlutterMethodChannel(name: "flutter_tokbox_plugin.view#\(id)", binaryMessenger: registrar.messenger())
-        channel!.setMethodCallHandler({(call: FlutterMethodCall, result: FlutterResult) -> Void in
-                        switch(call.method) {
-                        case "onCallDispose":
-                            print("dispose")
-                            //result(FlutterMethodNotImplemented)
-                            break
-                        case "getPlatformVersion":
-                            result("iOS " + UIDevice.current.systemVersion)
-                        default:
-                            result(FlutterMethodNotImplemented)
-                            return
-                        }
-                    })
-        self.kApiKey = kApiKey
-        self.kSessionId = kSessionId
-        self.kToken = kToken
-        self.registrar = registrar
-        super.init()
-        }
-    
-   
-    // Setup of the view and MethodChannels
-    public func view() -> UIView {
-//        channel.setMethodCallHandler({(call: FlutterMethodCall, result: FlutterResult) -> Void in
-//            if let args :Dictionary<String, Any> = call.arguments as? Dictionary<String,Any> {
-//                switch(call.method) {
-//                default:
-//                    result(FlutterMethodNotImplemented)
-//                    return
-//                }
-//            }
-//        })
-        //return UISlider()
-        return ViewController(apiKey: kApiKey, sessionId: kSessionId, keySession: kToken).view
-    }
-}
+import UIKit
+import Flutter
+import AVFoundation
+import AVKit
+
+
 //public class VideoViewFactory: NSObject, FlutterPlatformViewFactory{
 //    let controller: FlutterViewController
 //    init(controller: FlutterViewController) {
@@ -119,14 +21,14 @@ public class AppleMapController : NSObject, FlutterPlatformView {
 //        return VideoView(frame,viewId:viewId,args:args,channel:channel)
 //    }
 //}
-
-
+//
+//
 //public class VideoView: NSObject,FlutterPlatformView{
 //    let frame:CGRect
 //    let viewId: Int64
 //    let channel:FlutterMethodChannel
 //    var playerView:CustomView
-//
+//    
 //    let seekToMethod:String = "seekTo"
 //    let getDurationMethod:String = "getDuration"
 //    let getCurrentTimeMethod:String = "getCurrentPosition"
@@ -138,19 +40,19 @@ public class AppleMapController : NSObject, FlutterPlatformView {
 //    let fitMode:String = "fitMode"
 //    static let fitModeContain = "contain"
 //    static let fitModeCover = "cover"
-//
-//
-//
+//    
+//    
+//    
 //    init(_ frame:CGRect,viewId:Int64,args:Any?,channel:FlutterMethodChannel) {
 //        self.frame = frame
 //        self.viewId = viewId
 //        self.channel = channel
 //        playerView = CustomView(frame: frame,channel: self.channel)
 //    }
-//
-//
-//
-//
+//    
+//    
+//    
+//    
 //    public func view() -> UIView {
 //        self.channel.setMethodCallHandler({
 //            (call: FlutterMethodCall, result: @escaping FlutterResult) -> Void in
@@ -167,7 +69,7 @@ public class AppleMapController : NSObject, FlutterPlatformView {
 //                let fit = (call.arguments as! NSDictionary).object(forKey: self.fitMode) as! String
 //                self.playerView.loadWss(url: url, token: token, mediaId: "\(mediaId)" ,fitMode:fit)
 //                break
-//
+//                
 //            case self.seekToMethod:
 //                let position = (call.arguments) as! Int
 //                self.playerView.seekTo(position: position)
@@ -199,8 +101,8 @@ public class AppleMapController : NSObject, FlutterPlatformView {
 //        })
 //        return self.playerView
 //    }
-//
-//
+//    
+//    
 //}
 //class PlayerEvents{
 //    static let endTime:String = "endTime"
@@ -210,7 +112,7 @@ public class AppleMapController : NSObject, FlutterPlatformView {
 //    static let failedToPlayToEndTime:String = "failedToPlayToEndTime"
 //    static let assetDurationDidChange:String = "assetDurationDidChange"
 //    static let newErrorLogEntry:String = "newErrorLogEntry"
-//
+//    
 //}
 //class CustomView: UIView {
 //    var position:Int = -1
@@ -221,17 +123,17 @@ public class AppleMapController : NSObject, FlutterPlatformView {
 //    var wss:Bool = false
 //    var channel:FlutterMethodChannel?
 //    var fitMode:String = VideoView.fitModeCover
-//
-//
-//
+//    
+//    
+//    
 //    override func willRemoveSubview(_ subview: UIView) {
 //        //print("remove view")
 //        playerViewController.player?.pause()
 //        super.willRemoveSubview(subview)
-//
+//        
 //    }
-//
-//
+//    
+//    
 //    override func didMoveToWindow() {
 //        if(self.window == nil){
 //            doomed = true
@@ -240,8 +142,8 @@ public class AppleMapController : NSObject, FlutterPlatformView {
 //        }
 //        super.didMoveToWindow()
 //    }
-//
-//
+//    
+//    
 //    func loadHls(url:String,fitMode:String) -> Void {
 //        position = 0
 //        self.fitMode = fitMode
@@ -265,21 +167,21 @@ public class AppleMapController : NSObject, FlutterPlatformView {
 //        sizeToFit()
 //        addSubview(socketView)
 //    }
-//
+//    
 //    func dispose() -> Void {
 //        playerViewController.player?.pause()
 //        playerViewController.player = nil
 //        socketView.disposeSocket()
 //        socketView = SocketView()
 //    }
-//
+//    
 //    lazy var player:AVPlayer = {
 //        let player = AVPlayer()
 //        //do here some initialization
 //        //player.automaticallyWaitsToMinimizeStalling = true
 //        return player
 //    }()
-//
+//    
 //    func seekTo(position:Int){
 //        if(self.position != -1){
 //            self.position = position
@@ -318,14 +220,14 @@ public class AppleMapController : NSObject, FlutterPlatformView {
 //        if(!self.onFirstFrameFired) {return 0}
 //        return Int((self.playerViewController.player?.currentItem?.currentTime().seconds ?? 0) * 1000)
 //    }
-//
+//    
 //    lazy var socketView:SocketView =  {
 //        let sockView:SocketView = SocketView(frame: playerViewController.view.frame)
 //        //sockView.layer.contentsGravity = .resizeAspectFill
 //        return sockView
 //    }()
-//
-//
+//    
+//    
 //    lazy var playerViewController: AVPlayerViewController = {
 //        let player = self.player
 //        //initialization instructions
@@ -340,7 +242,7 @@ public class AppleMapController : NSObject, FlutterPlatformView {
 //        //player.actionAtItemEnd = .none
 //        return playerViewController
 //    }()
-//
+//    
 //    func errorEvent(type:String,data:NSDictionary)->Void{
 //        channel?.invokeMethod("player_exception", arguments: ["type":type,"message":data["message"]])
 //    }
@@ -372,8 +274,8 @@ public class AppleMapController : NSObject, FlutterPlatformView {
 //        errorEvent(type: PlayerEvents.failedToPlayToEndTime, data: ["message": error])
 //        //print("done here1: \(error)")
 //    }
-//
-//
+//    
+//    
 //    func reInitializePlayer(){
 //        if(doomed) {return}
 //        if(self.onFirstFrameFired){
@@ -387,18 +289,18 @@ public class AppleMapController : NSObject, FlutterPlatformView {
 //            playerViewController.videoGravity = .resizeAspectFill
 //        }else{
 //            playerViewController.videoGravity = .resizeAspect
-//
+//            
 //            //playerViewController. = CGPoint(x: self.bounds.midX, y: self.bounds.midY)
 //        }
 //        self.playerViewController.player!.volume = Float(self.volume)
 //        playerViewController.player!.rate = Float(self.rate)
 //        playerViewController.player!.automaticallyWaitsToMinimizeStalling  = true
 //        /// observers for events
-//
+//        
 //        playerViewController.player!.addPeriodicTimeObserver(forInterval: CMTime(seconds: 1, preferredTimescale: 2), queue: DispatchQueue.main) {[weak self] (progressTime) in
 //            if(self!.doomed) {return}
 //            if let duration = self!.playerViewController.player!.currentItem?.duration {
-//
+//                
 //                let durationSeconds = CMTimeGetSeconds(duration)
 //                var seconds = CMTimeGetSeconds(progressTime)
 //                var progress = Float(seconds/durationSeconds)
@@ -410,11 +312,11 @@ public class AppleMapController : NSObject, FlutterPlatformView {
 //                        self!.onFirstFrameFired = true
 //                        self?.firstFrameEvent()}
 //                    self!.rawEvent(type: PlayerEvents.onProgressChanged, data: ["currentPosition":Int(seconds*1000),"currentPositionPercent":progress])
-//
+//                    
 //                }
 //            }
 //        }
-//
+//        
 //        NotificationCenter.default.addObserver(self,
 //                                               selector: #selector(playerItemEvent(notification:)),
 //                                               name: NSNotification.Name.AVPlayerItemDidPlayToEndTime,
@@ -427,30 +329,30 @@ public class AppleMapController : NSObject, FlutterPlatformView {
 //                                               selector: #selector(playerItemEvent(notification:)),
 //                                               name: NSNotification.Name.AVPlayerItemTimeJumped,
 //                                               object: PlayerEvents.itemTimeJumped)
-//
+//        
 //        NotificationCenter.default.addObserver(self,
 //                                               selector: #selector(playerItemEvent(notification:)),
 //                                               name: NSNotification.Name.AVAssetDurationDidChange,
 //                                               object: PlayerEvents.assetDurationDidChange)
-//
-//
+//        
+//        
 //        NotificationCenter.default.addObserver(self,
 //                                               selector: #selector(failedToPlayToEndTime(notification:)),
 //                                               name: NSNotification.Name.AVPlayerItemFailedToPlayToEndTime,
 //                                               object: playerViewController.player!.currentItem)
-//
+//        
 //        NotificationCenter.default.addObserver(self,
 //                                               selector: #selector(newErrorLogEntry(notification:)),
 //                                               name: NSNotification.Name.AVPlayerItemNewErrorLogEntry,
 //                                               object: playerViewController.player!.currentItem)
-//
+//        
 //        //playerViewController.player!.pause()
 //        //self.playerViewController.player!.play()
 //        //playerViewController.player!.currentItem?.seek(to: CMTime(), completionHandler: { (_) in
 //        //    self.playerViewController.player!.play()
 //        //})
 //    }
-//
+//    
 //    init(frame: CGRect, channel: FlutterMethodChannel) {
 //        self.channel = channel
 //        super.init(frame: frame)
@@ -458,22 +360,22 @@ public class AppleMapController : NSObject, FlutterPlatformView {
 //    override func didAddSubview(_ subview: UIView) {
 //        //print("")
 //    }
-//
+//    
 //    override init(frame: CGRect) {
 //        super.init(frame: frame)
 //        setupView()
 //    }
-//
+//    
 //    required init?(coder aDecoder: NSCoder) {
 //        super.init(coder: aDecoder)
 //        setupView()
 //    }
-//
+//    
 //    private func setupView() {
 //        //backgroundColor = .red
-//
+//        
 //    }
-//
+//    
 //    override class var requiresConstraintBasedLayout: Bool {
 //        return true
 //    }
