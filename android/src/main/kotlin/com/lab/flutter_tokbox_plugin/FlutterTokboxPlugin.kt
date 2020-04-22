@@ -21,7 +21,7 @@ public class FlutterTokboxPlugin: FlutterPlugin, ActivityAware, MethodChannel.Me
       //if (registrar.activity() == null) return
       registrar.platformViewRegistry()
               .registerViewFactory(PLUGIN_VIEW_CHANNEL_KEY,
-                      TokboxViewFactory(registrar.messenger()))
+                      TokboxViewFactory(registrar.messenger(), registrar.activity()))
     }
   }
 
@@ -42,7 +42,7 @@ public class FlutterTokboxPlugin: FlutterPlugin, ActivityAware, MethodChannel.Me
     println("@@@@@ FlutterTokboxPlugin.onAttachedToActivity")
     pluginBinding!!.platformViewRegistry
             .registerViewFactory(PLUGIN_VIEW_CHANNEL_KEY,
-                    TokboxViewFactory(pluginBinding!!.binaryMessenger))
+                    TokboxViewFactory(pluginBinding!!.binaryMessenger, binding.activity))
   }
 
   override fun onDetachedFromActivity() {

@@ -79,12 +79,9 @@ class TokboxCameraView
     }
 
     fun connect(apiKey: String, sessionId: String, token: String) {
-        val perms = arrayOf(Manifest.permission.INTERNET, Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO)
-        if (EasyPermissions.hasPermissions(context, *perms)) {
-            callSession = Session.Builder(context, apiKey, sessionId).build()
-            callSession?.setSessionListener(this)
-            callSession?.connect(token)
-        } else setStatus("No permissons for camera and mic")
+        callSession = Session.Builder(context, apiKey, sessionId).build()
+        callSession?.setSessionListener(this)
+        callSession?.connect(token)
     }
 
     override fun onConnected(session: Session) {
@@ -120,7 +117,6 @@ class TokboxCameraView
 
     override fun onError(session: Session, opentokError: OpentokError) {
         setStatus("onError: Error (" + opentokError.message + ") in session " + session.sessionId)
-
         disconnect()
     }
 
@@ -213,7 +209,7 @@ class TokboxCameraView
         callSession?.disconnect()
     }
 
-    private fun setStatus(message: String) {
+    fun setStatus(message: String) {
         Log.d(TAG, message)
         mSessionStatus.text = message
     }
