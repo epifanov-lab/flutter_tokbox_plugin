@@ -57,7 +57,9 @@ class _FlutterTokboxAppState extends State<FlutterTokboxApp> {
                   /* apiKey */ '46644952',
                   /* sessionId */ '1_MX40NjY0NDk1Mn5-MTU4NzUxMzYyMzc2Mn5sb1cyUlE1T3k2NVozaXRmYkhzVXBvT2p-fg'
                 ),
-                (){}
+                (){
+                  print('@@@@@ onVideoCallFinished');
+                }
             ),
             Positioned(
               top: 8, right: 16,
