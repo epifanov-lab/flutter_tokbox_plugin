@@ -75,6 +75,8 @@ class _TokboxState extends State<TokboxWidget> {
       name: "Mr. John Doe",
       audioTrack: true,
       videoTrack: publishVideo,
+      cameraResolution: OTCameraCaptureResolution.OTCameraCaptureResolutionHigh,
+      cameraFrameRate: OTCameraCaptureFrameRate.OTCameraCaptureFrameRate30FPS
     );
 
     Widget view = OTFlutter.createNativeView(uid,
