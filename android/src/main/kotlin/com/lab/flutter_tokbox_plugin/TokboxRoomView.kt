@@ -1,6 +1,6 @@
 package com.lab.flutter_tokbox_plugin
 
-import android.Manifest
+
 import android.content.Context
 import android.opengl.GLSurfaceView
 import android.util.AttributeSet
@@ -8,17 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
-
-import com.opentok.android.Session
-import com.opentok.android.Stream
-import com.opentok.android.Publisher
-import com.opentok.android.PublisherKit
-import com.opentok.android.Subscriber
-import com.opentok.android.BaseVideoRenderer
-import com.opentok.android.OpentokError
-import pub.devrel.easypermissions.EasyPermissions
-
-
+import com.opentok.android.*
 import java.util.*
 
 interface TokboxCameraListener {
@@ -89,7 +79,8 @@ class TokboxCameraView
         mProgressBar.visibility = View.GONE
 
         publisher = Publisher.Builder(context)
-                .resolution(Publisher.CameraCaptureResolution.MEDIUM)
+                .resolution(Publisher.CameraCaptureResolution.HIGH)
+                .frameRate(Publisher.CameraCaptureFrameRate.FPS_30)
                 .name("publisher")
                 .build()
 

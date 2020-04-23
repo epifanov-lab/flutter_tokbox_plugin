@@ -26,9 +26,7 @@ class _TokboxState extends State<TokboxWidget> {
   bool publishVideo = true;
   OTFlutter controller;
   OpenTokConfiguration openTokConfiguration;
-  
-  
-  
+
   @override
   Widget build(BuildContext context) {
     Map<String, String> params = <String, String>{
