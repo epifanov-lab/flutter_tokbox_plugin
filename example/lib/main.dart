@@ -53,9 +53,9 @@ class _FlutterTokboxAppState extends State<FlutterTokboxApp> {
           children: <Widget>[
             TokboxWidget(
                 TokboxConfiguration(
-                  /* token */ 'T1==cGFydG5lcl9pZD00NjY0NDk1MiZzaWc9Y2MwZDdjYTNlOGViZjQwYjlmMTdiZDZhNjljMWZiOGVjODNiZGJhMDpzZXNzaW9uX2lkPTFfTVg0ME5qWTBORGsxTW41LU1UVTROelV4TXpZeU16YzJNbjVzYjFjeVVsRTFUM2syTlZvemFYUm1Za2h6VlhCdlQycC1mZyZjcmVhdGVfdGltZT0xNTg3NTEzNjIzJnJvbGU9bW9kZXJhdG9yJm5vbmNlPTE1ODc1MTM2MjMuNzcyODE4Mzc3NTY2OTg=',
+                  /* token */ 'T1==cGFydG5lcl9pZD00NjY0NDk1MiZzaWc9NzAyMTcxNmFhODJhY2U3M2FjMDZmYWFmNzk0ODY0YmQ4MzJhOGQ1MTpzZXNzaW9uX2lkPTFfTVg0ME5qWTBORGsxTW41LU1UVTROell5TnpNME1URXhOMzVVVWpaVWRqRXZOSGN4ZGpkdVowb3piR05VTVZCU1drbC1mZyZjcmVhdGVfdGltZT0xNTg3NjI3MzQxJnJvbGU9bW9kZXJhdG9yJm5vbmNlPTE1ODc2MjczNDEuMTI3OTExMDU5NjUwNDI=',
                   /* apiKey */ '46644952',
-                  /* sessionId */ '1_MX40NjY0NDk1Mn5-MTU4NzUxMzYyMzc2Mn5sb1cyUlE1T3k2NVozaXRmYkhzVXBvT2p-fg'
+                  /* sessionId */ '1_MX40NjY0NDk1Mn5-MTU4NzYyNzM0MTExN35UUjZUdjEvNHcxdjduZ0ozbGNUMVBSWkl-fg'
                 ),
                 (){
                   print('@@@@@ onVideoCallFinished');
